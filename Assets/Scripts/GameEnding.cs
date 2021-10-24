@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameEnding : MonoBehaviour
 {
@@ -9,7 +10,14 @@ public class GameEnding : MonoBehaviour
     public float displayImageDuration = 1f;
     public GameObject player;
     public CanvasGroup exitBackgroundImageCanvasGroup;
+    public CanvasGroup caughtBackgroundImageCanvasGroup;
     bool m_IsPlayerAtExit = false;
+    bool m_IsPlayerCaught = false;
+
+    public void CaughtPlayer()
+    {
+        m_IsPlayerCaught = true;
+    }
 
     void OnTriggerEnter(Collider c) {
         if (c.gameObject == player)
@@ -18,20 +26,25 @@ public class GameEnding : MonoBehaviour
         }
     }
 
-    void EndLevel() {
+    void EndLevel(CanvasGroup imageCanvasGroup, bool doRestart) {
         m_Timer += Time.deltaTime;
-        exitBackgroundImageCanvasGroup.alpha = m_Timer / fadeDuration;
+        imageCanvasGroup.alpha = m_Timer / fadeDuration;
 
         if (m_Timer > fadeDuration + displayImageDuration)
         {
             Debug.Log("Game ended");
-            Application.Quit();
+            if (!doRestart) {
+                Application.Quit();
+            }
+            else SceneManager.LoadScene(0);
         }
     }
     void Update() {
-       if (m_IsPlayerAtExit)
-       {
-           EndLevel();
+       if (m_IsPlayerAtExit) {
+           EndLevel(exitBackgroundImageCanvasGroup, false);
+       }
+       else if (m_IsPlayerCaught) {
+           EndLevel(caughtBackgroundImageCanvasGroup, true);
        }
     }
 }
