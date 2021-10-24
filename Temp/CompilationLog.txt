@@ -1,0 +1,2 @@
+# Starting compiling Assembly-CSharp.dll
+/media/bulat/LUSERHDD/Unity/Install path/2020.3.21f1/Editor/Data/Tools/RoslynScripts/unity_csc.sh /noconfig @Temp/UnityTempFile-1d21b7657e065f8b594580fa68ff275b
